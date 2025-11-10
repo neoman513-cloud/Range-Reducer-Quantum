@@ -9,6 +9,12 @@ https://qrng.anu.edu.au/random-block-hex/ - you can check the information yourse
 3) if quantum random happens to generate the right combination at any point in those 2048 hex then its a jackpot
 
 
+console example, first 13 hex(besides 1 prefix) of puzzle 73 and last 5 hex are completely scanned showing them as 00000
+
+
+<img width="1453" height="639" alt="image" src="https://github.com/user-attachments/assets/0e81ab6c-60d7-44de-8301-4bcbfabf503f" />
+
+
 Run (dont include puzzle number in the command, its just for info):
 
 `main.exe 100000 1fffff 29a78213caa9eea824acf08022ab9dfc83414f56` - puzzle 21\
