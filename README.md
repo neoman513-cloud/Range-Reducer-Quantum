@@ -1,3 +1,7 @@
+This program uses real Quantum random data straight from australian laboratory with quantum fluctations vaccuum
+
+https://qrng.anu.edu.au/random-block-hex/ - you can check the information yourself
+
 1) IT gets 2048 hex chars directly from https://qrng.anu.edu.au/wp-content/plugins/colours-plugin/get_block_hex.php
 
 2) this whole string is being moved from beginning to end...last 5 hex chars are being scanned completely
