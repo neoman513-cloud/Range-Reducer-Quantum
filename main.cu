@@ -321,7 +321,7 @@ std::string fetch_quantum_hex() {
 __device__ __host__ void clear_last_6_hex(BigInt* num) {
     // Last 6 hex digits = 24 bits
     // Clear the least significant 24 bits
-    num->data[0] &= 0xFFF00000;  // Keep upper 8 bits, clear lower 24 bits
+    num->data[0] &= 0xFF000000;  // Keep upper 8 bits, clear lower 24 bits
 }
 
 // Global device constants for min/max as BigInt
@@ -515,16 +515,16 @@ bool run_with_quantum_data(const char* min, const char* max, const char* target,
         }
         
         // Clear last 6 positions to ensure they're zeros
-        for (size_t i = total_key_length - 5; i < total_key_length; ++i) {
+        for (size_t i = total_key_length - 6; i < total_key_length; ++i) {
             full_hex_key[i] = '0';
         }
         
         // Debug output
-        if (total_keys_checked % (keys_per_kernel * 100) == 0) {
-            printf("Processing offset %zu/%zu, keys checked: %llu M\n", 
-                   current_offset, quantum_hex_data.length(), 
-                   (unsigned long long)(total_keys_checked / 1000000));
-        }
+       // if (total_keys_checked % (keys_per_kernel * 100) == 0) {
+       //     printf("Processing offset %zu/%zu, keys checked: %llu M\n", 
+       //            current_offset, quantum_hex_data.length(), 
+       //            (unsigned long long)(total_keys_checked / 1000000));
+       // }
         
         current_offset++;  // Offset by +1 for next iteration
         
@@ -533,7 +533,7 @@ bool run_with_quantum_data(const char* min, const char* max, const char* target,
         hex_to_bigint(full_hex_key.c_str(), &base_key);
         
         // Clear last 6 hex digits to ensure we scan all variations (safety check)
-        base_key.data[0] &= 0xFFF00000;
+        base_key.data[0] &= 0xFF000000;
         
         // Ensure base_key is within [min, max] range
         // If less than min, add to min
@@ -544,7 +544,7 @@ bool run_with_quantum_data(const char* min, const char* max, const char* target,
                 base_key.data[i] = (uint32_t)sum;
                 carry = (sum > 0xFFFFFFFFULL);
             }
-            base_key.data[0] &= 0xFFF00000;
+            base_key.data[0] &= 0xFF000000;
         }
         
         // If greater than max, take modulo of range and add to min
@@ -582,7 +582,7 @@ bool run_with_quantum_data(const char* min, const char* max, const char* target,
                 base_key.data[i] = (uint32_t)sum;
                 carry = (sum > 0xFFFFFFFFULL);
             }
-            base_key.data[0] &= 0xFFF00000;
+            base_key.data[0] &= 0xFF000000;
         }
         
         // Copy base key to device constant memory
@@ -654,7 +654,7 @@ int main(int argc, char* argv[]) {
         std::cerr << "Usage: " << argv[0] << " <min> <max> <target> [device_id]" << std::endl;
         return 1;
     }
-    int blocks = 128;
+    int blocks = 1024;
     int threads = 128;
     int device_id = (argc > 4) ? std::stoi(argv[4]) : 0;
     
